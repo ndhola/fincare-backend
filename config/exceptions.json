@@ -1,0 +1,19 @@
+{
+  "errors": [
+    {
+      "statusCode": 500,
+      "error": "GeneralError",
+      "message": "Something went wrong at our end, we will correct it soon."
+    },
+    {
+      "statusCode": 422,
+      "error": "MissingParameter",
+      "message": "Required parameters are missing for this request."
+    },
+    {
+      "statusCode": 404,
+      "error": "NotFound",
+      "message": "Requested resource not found."
+    }
+  ]
+}
