@@ -1,11 +1,11 @@
 const router = require('express').Router();
-const ExpenseControler = require('../controllers/expense.controller');
+const ExpenseController = require('../controllers/expense.controller');
 
-router.post('/createExpenseCategory', ExpenseControler.createExpenseCategory);
-router.post('/', ExpenseControler.createExpense);
-router.put('/:id', ExpenseControler.editExpense);
-router.get('/getAllExpenseCategory/:userId', ExpenseControler.getAllExpenseCategory);
-router.get('/:userId', ExpenseControler.getAllExpense);
-router.delete('/:expenseId', ExpenseControler.deleteExpense);
+router.post('/createExpenseCategory', ExpenseController.createExpenseCategory);
+router.post('/', ExpenseController.createExpense);
+router.put('/:id', ExpenseController.editExpense);
+router.get('/getAllExpenseCategory/:userId', ExpenseController.getAllExpenseCategory);
+router.get('/:userId', ExpenseController.getAllExpense);
+router.delete('/:expenseId', ExpenseController.deleteExpense);
 
 module.exports = router;

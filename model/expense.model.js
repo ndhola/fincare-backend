@@ -81,5 +81,16 @@ class ExpenseModel{
             return null;
         }
     }
+
+    static async getExpensesByDateRange(userId,startDate,endDate){
+        try {
+            const expenses = await new ExpenseSchema().expense.find({userId, dateOfExpense: {$gte:startDate, $lte: endDate}});
+            return expenses;
+
+        } catch (error) {
+            console.error('Error in model getExpensesByDateRange', error);
+            return null;
+        }
+    }
 }
 module.exports = ExpenseModel;
