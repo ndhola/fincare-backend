@@ -11,7 +11,7 @@ class IncomeModel {
     userId
   ) {
     try {
-      await new IncomeSchema().Income.create({
+      await new IncomeSchema().income.create({
         title,
         amount,
         dateOfIncome,
@@ -36,7 +36,7 @@ class IncomeModel {
     userId
   ) {
     try {
-      await new IncomeSchema().Income.findOneAndUpdate(
+      await new IncomeSchema().income.findOneAndUpdate(
         { _id: id },
         {
           title,
@@ -56,7 +56,7 @@ class IncomeModel {
 
   static async getAllIncomes(userId) {
     try {
-      let Incomes = await new IncomeSchema().Income.find({ userId });
+      let Incomes = await new IncomeSchema().income.find({ userId });
       return Incomes;
     } catch (error) {
       console.error("Error in model getAll Income", error);
@@ -66,7 +66,7 @@ class IncomeModel {
 
   static async deleteIncome(IncomeId) {
     try {
-      await new IncomeSchema().Income.deleteOne({ _id: IncomeId });
+      await new IncomeSchema().income.deleteOne({ _id: incomeId });
       return true;
     } catch (error) {
       console.error("Error in model delete Income", error);
