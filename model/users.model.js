@@ -86,5 +86,28 @@ class UserModel {
       return false
     }
   }
+
+  static async updatePassword(email, newPassword) {
+    try {
+      const query = { email }
+      const update = {
+        $set: { password: newPassword },
+      }
+      const options = { returnNewDocument: true }
+
+      const user = await new UsersSchema().users.findOneAndUpdate(
+        query,
+        update,
+        options
+      )
+      if (user) {
+        return true
+      }
+      return false
+    } catch (error) {
+      console.error('Error in model updatePassword', error)
+      return false
+    }
+  }
 }
 module.exports = UserModel
