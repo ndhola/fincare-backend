@@ -121,11 +121,11 @@ class UsersController {
 
       const otp = generateOtp()
 
-      sendOtpToEmail(email, otp)
+      sendOtpToEmail(email, otp, 'FinCare Login', 'Login to FinCare account')
       await UserModel.saveOtpToDb(email, otp)
       return res.sendResponse({
         success: true,
-        message: `Email sent successfully to ${email}!`,
+        message: `Login OTP Email is sent successfully to ${email}!`,
         data: {
           email,
           otp,
@@ -134,7 +134,7 @@ class UsersController {
     } catch (error) {
       console.error('Error in loginUserWithOtp', error)
       return res.sendError(
-        new Exception('GeneralError', 'Email cound not be sent!')
+        new Exception('GeneralError', 'OTP Email for Login could not be sent!')
       )
     }
   }
@@ -144,6 +144,10 @@ class UsersController {
       const { email, otp } = req.body
 
       let invalidParams = []
+
+      if (!email) {
+        invalidParams.push('Email')
+      }
 
       if (!otp) {
         invalidParams.push('OTP')
@@ -163,17 +167,106 @@ class UsersController {
       if (optVerificationStatus) {
         return res.sendResponse({
           success: true,
-          message: 'OTP Verified! Login Success!',
+          message: 'OTP Verification Successful!',
         })
       } else {
         return res.sendError(
-          new Exception('AuthenticationFailed', 'Invalid OTP!')
+          new Exception('AuthenticationFailed', 'Invalid or Incorrect OTP!')
         )
       }
     } catch (error) {
       console.error('Error in verifyOtp', error)
       return res.sendError(
         new Exception('GeneralError', 'OTP cound not be verified!')
+      )
+    }
+  }
+
+  static async forgotPasswrdSendOtp(req, res) {
+    try {
+      const { email } = req.body
+
+      let invalidParams = []
+
+      if (!email) {
+        invalidParams.push('Email')
+      }
+
+      if (invalidParams.length) {
+        return res.sendError(
+          new Exception(
+            'MissingParameter',
+            'Parameters missing: ' + invalidParams.join(', ')
+          )
+        )
+      }
+
+      const otp = generateOtp()
+
+      sendOtpToEmail(email, otp, 'FinCare Password Reset', 'Password Reset')
+      await UserModel.saveOtpToDb(email, otp)
+
+      return res.sendResponse({
+        success: true,
+        message: `Password Reset OTP Email is sent successfully to ${email}!`,
+        data: {
+          email,
+          otp,
+        },
+      })
+    } catch (error) {
+      console.error('Error in forgotPasswrdSendOtp', error)
+      return res.sendError(
+        new Exception(
+          'GeneralError',
+          'OTP Email for Forgot Password could not be sent!'
+        )
+      )
+    }
+  }
+
+  static async forgotPasswrdReset(req, res) {
+    try {
+      const { email, newPassword } = req.body
+
+      let invalidParams = []
+
+      if (!email) {
+        invalidParams.push('Email')
+      }
+
+      if (!newPassword) {
+        invalidParams.push('NewPassword')
+      }
+
+      if (invalidParams.length) {
+        return res.sendError(
+          new Exception(
+            'MissingParameter',
+            'Parameters missing: ' + invalidParams.join(', ')
+          )
+        )
+      }
+
+      const passwordResetStatus = await UserModel.updatePassword(
+        email,
+        newPassword
+      )
+
+      if (passwordResetStatus) {
+        return res.sendResponse({
+          success: true,
+          message: 'Password Reset Successful!',
+        })
+      }
+
+      return res.sendError(
+        new Exception('GeneralError', 'Password Reset Failed!')
+      )
+    } catch (error) {
+      console.error('Error in forgotPasswrdReset', error)
+      return res.sendError(
+        new Exception('GeneralError', 'Password Reset Failed!')
       )
     }
   }
