@@ -1,7 +1,6 @@
 const router = require("express").Router();
 const userRoutes = require("./user.routes");
 const expenseRoutes = require("./expense.routes");
-const incomeRoutes = require("./income.routes");
 const reportRoutes = require("./report.routes");
 const dashboardRoutes = require("./dashboard.routes");
 
