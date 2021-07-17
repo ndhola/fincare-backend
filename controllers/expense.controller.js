@@ -113,13 +113,29 @@ class ExpenseController {
                 return res.sendError(new Exception('MissingParameter', 'Parameters missing: '+invalidParams.join(',')));
             }
 
-            const expenses = await ExpenseModel.getAllExpenses(userId);
+            let expenses = await ExpenseModel.getAllExpenses(userId);
+            const categories = await ExpenseModel.getAllExpenseCategories(userId);
+
+            let expenseResult = [];
 
             if(expenses){
+                for(let i=0;i<expenses.length;i++){
+                    let categoryName = (categories.find(x => x._id.toString() === expenses[i].categoryId.toString())).name;
+                    expenseResult.push({
+                        _id: expenses[i]._id,
+                        title: expenses[i].title,
+                        amount: expenses[i].amount,
+                        dateOfExpense: expenses[i].dateOfExpense,
+                        paymentMethod: expenses[i].paymentMethod,
+                        categoryId: expenses[i].categoryId,
+                        categoryName: categoryName,
+                        userId: expenses[i].userId
+                    })
+                }
                 return res.sendResponse({
                     success: true,
                     message: 'Expenses Retrived',
-                    data: expenses
+                    data: expenseResult
                 });
             } else {
                 return res.sendError(new Exception('GeneralError'));

@@ -40,7 +40,7 @@ class ExpenseModel{
 
     static async getAllExpenses(userId){
         try {
-            const expenses = await new ExpenseSchema().expense.find({userId});
+            let expenses = await new ExpenseSchema().expense.find({userId});
             return expenses;
 
         } catch (error) {
