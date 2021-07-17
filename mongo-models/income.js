@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 class Income {
   constructor() {
     try {
-      this.__Income = new global.Mongoose.Schema(
+      this.__income = new global.Mongoose.Schema(
         {
           title: { type: String },
           amount: { type: Number },
@@ -17,9 +17,9 @@ class Income {
           versionKey: false,
         }
       );
-      this.Income = global.Mongoose.model("income", this.__Income);
+      this.income = global.Mongoose.model("income", this.__income);
     } catch (error) {
-      this.Income = global.Mongoose.model("income");
+      this.income = global.Mongoose.model("income");
     }
   }
 }
