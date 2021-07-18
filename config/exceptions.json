@@ -14,6 +14,16 @@
       "statusCode": 404,
       "error": "NotFound",
       "message": "Requested resource not found."
+    },
+    {
+      "statusCode": 400,
+      "error": "BadRequest",
+      "message": "Bad request by user."
+    },
+    {
+      "statusCode": 400,
+      "error": "AuthenticationFailed",
+      "message": "User Authentication Failed."
     }
   ]
 }
