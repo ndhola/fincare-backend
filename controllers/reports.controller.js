@@ -25,8 +25,8 @@ class ReportsController {
                 return res.sendError(new Exception('MissingParameter', 'Parameters missing: '+invalidParams.join(',')));
             }
 
-            const startDate = moment([year,month-1]).unix();
-            const endDate = moment(startDate).endOf('month');
+            const startDate = moment([year,month-1]).unix() * 1000;
+            const endDate = moment(startDate).endOf('month') * 1000;
 
             const expenseResult = await ExpenseModel.getExpensesByDateRange(userId,startDate,endDate);
             const categories = await ExpenseModel.getAllExpenseCategories(userId);
@@ -85,14 +85,14 @@ class ReportsController {
                 results[monthName]=expenseData;
             }
 
-            let startDate = moment().startOf('month').unix();
-            let endDate = moment(startDate).endOf('month');
+            let startDate = moment().startOf('month').unix() * 1000;
+            let endDate = moment(startDate).endOf('month') * 1000;
             let monthName = moment().format('MM');
             functionCalls.push(fetchExpenses(startDate,endDate,monthName));
 
             for(let i=0;i<4;i++){
-                startDate = moment().subtract(i+1,'months').startOf('month').unix();
-                endDate = moment().subtract(i+1,'months').endOf('month').unix();
+                startDate = moment().subtract(i+1,'months').startOf('month').unix() * 1000;
+                endDate = moment().subtract(i+1,'months').endOf('month').unix() * 1000;
                 monthName = moment().subtract(i+1,'months').format('MM');
                 functionCalls.push(fetchExpenses(startDate,endDate,monthName));
             }
@@ -143,8 +143,8 @@ class ReportsController {
                 results[date]=expenseData;
             }
 
-            let startDate = moment().startOf('day').unix();
-            let endDate = moment().endOf('day').unix();
+            let startDate = moment().startOf('day').unix() * 1000;
+            let endDate = moment().endOf('day').unix() * 1000;
             let date = startDate;
             functionCalls.push(fetchExpenses(startDate,endDate,date));
 
