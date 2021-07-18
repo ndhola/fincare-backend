@@ -149,8 +149,8 @@ class ReportsController {
             functionCalls.push(fetchExpenses(startDate,endDate,date));
 
             for(let i=0;i<9;i++){
-                startDate = moment().subtract(i+1,'days').startOf('day').unix();
-                endDate = moment().subtract(i+1,'days').endOf('day').unix();
+                startDate = moment().subtract(i+1,'days').startOf('day').unix() * 1000;
+                endDate = moment().subtract(i+1,'days').endOf('day').unix() * 1000;
                 date = startDate
                 functionCalls.push(fetchExpenses(startDate,endDate,date));
             }
