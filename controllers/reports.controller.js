@@ -26,7 +26,7 @@ class ReportsController {
             }
 
             const startDate = moment([year,month-1]).unix() * 1000;
-            const endDate = moment(startDate).endOf('month') * 1000;
+            const endDate = moment([year,month-1]).endOf('month').unix()* 1000;
 
             const expenseResult = await ExpenseModel.getExpensesByDateRange(userId,startDate,endDate);
             const categories = await ExpenseModel.getAllExpenseCategories(userId);
