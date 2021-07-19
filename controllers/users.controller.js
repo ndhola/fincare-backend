@@ -31,12 +31,10 @@ class UsersController {
         email
       )
       if (userAlreadyRegistered) {
-        return res.sendError(
-          new Exception(
-            'BadRequest',
-            'User Registration with this Email already exists!'
-          )
-        )
+        return res.sendResponse({
+          success: false,
+          message: 'User Registration with this Email already exists!',
+        })
       }
 
       const registerUserResult = await UserModel.registerUser(
@@ -90,9 +88,10 @@ class UsersController {
           data: loginUserResult,
         })
       } else {
-        return res.sendError(
-          new Exception('AuthenticationFailed', 'Invalid Credentials!')
-        )
+        return res.sendResponse({
+          success: false,
+          message: 'Invalid Credentials!',
+        })
       }
     } catch (error) {
       console.error('Error in loginUser', error)
@@ -209,7 +208,7 @@ class UsersController {
 
       return res.sendResponse({
         success: true,
-        message: `Password Reset OTP Email is sent successfully to ${email}!`,
+        message: `OTP for Password Reset is sent successfully to ${email}!`,
         data: {
           email,
           otp,
@@ -259,11 +258,12 @@ class UsersController {
           success: true,
           message: 'Password Reset Successful!',
         })
+      } else {
+        return res.sendResponse({
+          success: false,
+          message: 'Password Reset Failed!',
+        })
       }
-
-      return res.sendError(
-        new Exception('GeneralError', 'Password Reset Failed!')
-      )
     } catch (error) {
       console.error('Error in forgotPasswrdReset', error)
       return res.sendError(
