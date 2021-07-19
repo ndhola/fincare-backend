@@ -170,9 +170,10 @@ class UsersController {
           message: 'OTP Verification Successful!',
         })
       } else {
-        return res.sendError(
-          new Exception('AuthenticationFailed', 'Invalid or Incorrect OTP!')
-        )
+        return res.sendResponse({
+          success: false,
+          message: 'OTP Verification Failed!',
+        })
       }
     } catch (error) {
       console.error('Error in verifyOtp', error)
