@@ -19,9 +19,12 @@ class UserModel {
 
   static async getUserId(email) {
     try {
-      const user = await new UsersSchema().users.findOne({
-        email,
-      })
+      const user = await new UsersSchema().users
+        .findOne({
+          email,
+        })
+        .select('-password')
+        .select('-otp')
 
       if (user) {
         return user
