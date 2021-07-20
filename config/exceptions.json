@@ -24,6 +24,11 @@
       "statusCode": 400,
       "error": "AuthenticationFailed",
       "message": "User Authentication Failed."
+    },
+    {
+      "statusCode": 401,
+      "error": "TokenError",
+      "message": "No Token or Invalid Token! Unauthorized!"
     }
   ]
 }
