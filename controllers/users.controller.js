@@ -1,6 +1,7 @@
 const Exception = require('../lib/exceptions')
 const UserModel = require('../model/users.model')
 const { sendOtpToEmail, generateOtp } = require('../lib/EmailUtils')
+const generateToken = require('../lib/generateToken')
 
 class UsersController {
   static async registerUser(req, res) {
@@ -31,12 +32,10 @@ class UsersController {
         email
       )
       if (userAlreadyRegistered) {
-        return res.sendError(
-          new Exception(
-            'BadRequest',
-            'User Registration with this Email already exists!'
-          )
-        )
+        return res.sendResponse({
+          success: false,
+          message: 'User Registration with this Email already exists!',
+        })
       }
 
       const registerUserResult = await UserModel.registerUser(
@@ -56,6 +55,26 @@ class UsersController {
       }
     } catch (error) {
       console.error('Error in registerUser', error)
+      return res.sendError(new Exception('GeneralError'))
+    }
+  }
+
+  static async token(req, res) {
+    try {
+      if (req.user) {
+        return res.sendResponse({
+          success: true,
+          message: 'Token Success',
+          data: req.user,
+        })
+      } else {
+        return res.sendResponse({
+          success: false,
+          message: 'Token Failed',
+        })
+      }
+    } catch (error) {
+      console.error('Error in token', error)
       return res.sendError(new Exception('GeneralError'))
     }
   }
@@ -84,15 +103,19 @@ class UsersController {
       const loginUserResult = await UserModel.loginUser(email, password)
 
       if (loginUserResult) {
+        const user = await UserModel.getUserId(email)
+
         return res.sendResponse({
           success: true,
           message: 'User Login Success!',
           data: loginUserResult,
+          token: generateToken(user),
         })
       } else {
-        return res.sendError(
-          new Exception('AuthenticationFailed', 'Invalid Credentials!')
-        )
+        return res.sendResponse({
+          success: false,
+          message: 'Invalid Credentials!',
+        })
       }
     } catch (error) {
       console.error('Error in loginUser', error)
@@ -165,14 +188,17 @@ class UsersController {
       const optVerificationStatus = await UserModel.verifyOtp(email, otp)
 
       if (optVerificationStatus) {
+        const user = await UserModel.getUserId(email)
         return res.sendResponse({
           success: true,
           message: 'OTP Verification Successful!',
+          token: generateToken(user),
         })
       } else {
-        return res.sendError(
-          new Exception('AuthenticationFailed', 'Invalid or Incorrect OTP!')
-        )
+        return res.sendResponse({
+          success: false,
+          message: 'OTP Verification Failed!',
+        })
       }
     } catch (error) {
       console.error('Error in verifyOtp', error)
@@ -208,7 +234,7 @@ class UsersController {
 
       return res.sendResponse({
         success: true,
-        message: `Password Reset OTP Email is sent successfully to ${email}!`,
+        message: `OTP for Password Reset is sent successfully to ${email}!`,
         data: {
           email,
           otp,
@@ -258,11 +284,12 @@ class UsersController {
           success: true,
           message: 'Password Reset Successful!',
         })
+      } else {
+        return res.sendResponse({
+          success: false,
+          message: 'Password Reset Failed!',
+        })
       }
-
-      return res.sendError(
-        new Exception('GeneralError', 'Password Reset Failed!')
-      )
     } catch (error) {
       console.error('Error in forgotPasswrdReset', error)
       return res.sendError(

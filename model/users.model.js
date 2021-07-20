@@ -17,6 +17,25 @@ class UserModel {
     }
   }
 
+  static async getUserId(email) {
+    try {
+      const user = await new UsersSchema().users
+        .findOne({
+          email,
+        })
+        .select('-password')
+        .select('-otp')
+
+      if (user) {
+        return user
+      }
+      return null
+    } catch (error) {
+      console.error('Error in model getUserId!', error)
+      return null
+    }
+  }
+
   static async registerUser(name, email, password) {
     try {
       const user = await new UsersSchema().users.create({
