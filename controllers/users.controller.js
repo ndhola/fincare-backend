@@ -1,6 +1,7 @@
 const Exception = require('../lib/exceptions')
 const UserModel = require('../model/users.model')
 const { sendOtpToEmail, generateOtp } = require('../lib/EmailUtils')
+const generateToken = require('../lib/generateToken')
 
 class UsersController {
   static async registerUser(req, res) {
@@ -58,6 +59,26 @@ class UsersController {
     }
   }
 
+  static async token(req, res) {
+    try {
+      if (req.user) {
+        return res.sendResponse({
+          success: true,
+          message: 'Token Success',
+          data: req.user,
+        })
+      } else {
+        return res.sendResponse({
+          success: false,
+          message: 'Token Failed',
+        })
+      }
+    } catch (error) {
+      console.error('Error in token', error)
+      return res.sendError(new Exception('GeneralError'))
+    }
+  }
+
   static async loginUserWithPassword(req, res) {
     try {
       const { email, password } = req.body
@@ -82,10 +103,13 @@ class UsersController {
       const loginUserResult = await UserModel.loginUser(email, password)
 
       if (loginUserResult) {
+        const user = await UserModel.getUserId(email)
+
         return res.sendResponse({
           success: true,
           message: 'User Login Success!',
           data: loginUserResult,
+          token: generateToken(user),
         })
       } else {
         return res.sendResponse({
@@ -164,9 +188,11 @@ class UsersController {
       const optVerificationStatus = await UserModel.verifyOtp(email, otp)
 
       if (optVerificationStatus) {
+        const user = await UserModel.getUserId(email)
         return res.sendResponse({
           success: true,
           message: 'OTP Verification Successful!',
+          token: generateToken(user),
         })
       } else {
         return res.sendResponse({
