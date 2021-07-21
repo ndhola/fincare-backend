@@ -1,3 +1,7 @@
+/**
+ * Author: Nikunj Shamjibhai Dhola
+ * Description: Report Generation:  Expense by category, Expense by Month, Expense by Day
+ */
 const moment = require("moment");
 const Exception = require("../lib/exceptions");
 const ExpenseModel = require("../model/expense.model");
@@ -5,30 +9,23 @@ const ExpenseModel = require("../model/expense.model");
 class ReportsController {
 
   /**
-     * Function: Get Data by month
+     * Function: Get Last Ten Days' Data
      * Url Parameters: userId
-     * Body Parameters: month, year
      * Logic:
-        - Get start of given month
-        - Get end of given month
-        - Get expense data between start and end of given month
-        - Get all expense categories for current user
-        - Map category name and id with expense data
-        - Return expense data
+        - Get start of current day
+        - Get end of current day
+        - Get expense data between start and end of current day
+        - Similarly, get data for last ten days
+        - Map data with date
+        - Calculate total expense for each date
+        - Return that mapped expense data
      */
-  static async getDataByMonth(req, res) {
+  static async getLastTenDaysData(req, res) {
     try {
-      let { month, year } = req.body;
       const { userId } = req.params;
 
       let invalidParams = [];
 
-      if (!month || month > 12 || month < 1) {
-        invalidParams.push("month");
-      }
-      if (!year) {
-        invalidParams.push("year");
-      }
       if (!userId) {
         invalidParams.push("userId");
       }
@@ -42,54 +39,60 @@ class ReportsController {
         );
       }
 
-      // Get start and end of given month
-      const startDate = moment([year, month - 1]).unix() * 1000;
-      const endDate =
-        moment([year, month - 1])
-          .endOf("month")
-          .unix() * 1000;
+      let functionCalls = [];
+      let results = {};
+      const fetchExpenses = async (startDate, endDate, date) => {
+        const expenseData = await ExpenseModel.getExpensesByDateRange(
+          userId,
+          startDate,
+          endDate
+        );
+        results[date] = expenseData;
+      };
 
-      const expenseResult = await ExpenseModel.getExpensesByDateRange(
-        userId,
-        startDate,
-        endDate
-      );
-      const categories = await ExpenseModel.getAllExpenseCategories(userId);
+      // Function call for data between Start and end of the current day
+      let startDate = moment().startOf("day").unix() * 1000;
+      let endDate = moment().endOf("day").unix() * 1000;
+      let date = startDate;
+      functionCalls.push(fetchExpenses(startDate, endDate, date));
 
-      let expenseMap = new Map();
+      // Function calls for data between Start and end of other nine days
+      for (let i = 0; i < 9; i++) {
+        startDate =
+          moment()
+            .subtract(i + 1, "days")
+            .startOf("day")
+            .unix() * 1000;
+        endDate =
+          moment()
+            .subtract(i + 1, "days")
+            .endOf("day")
+            .unix() * 1000;
+        date = startDate;
+        functionCalls.push(fetchExpenses(startDate, endDate, date));
+      }
 
-      expenseResult.forEach((expense) => {
-        if (expenseMap.has(expense.categoryId)) {
-          expenseMap.set(
-            expense.categoryId,
-            expenseMap.get(expense.categoryId) + expense.amount
-          );
-        } else {
-          expenseMap.set(expense.categoryId, expense.amount);
+      await Promise.all(functionCalls);
+
+      if (results) {
+        // Calculate total expense for each month
+        for (const [key, expenses] of Object.entries(results)) {
+          let totalAmount = 0;
+          expenses.forEach((expense) => {
+            totalAmount += expense.amount;
+          });
+          results[key] = totalAmount;
         }
-      });
-
-      let resultObject = {};
-
-      // Mapping of categories with expense data
-      expenseMap.forEach((value, key) => {
-        let categoryName = categories.find(
-          (x) => x._id.toString() === key.toString()
-        ).name;
-        resultObject[categoryName] = value;
-      });
-
-      if (expenseResult) {
         return res.sendResponse({
           success: true,
           message: "Report result retrieved",
-          data: resultObject,
+          data: results,
         });
       } else {
         return res.sendError(new Exception("GeneralError"));
       }
     } catch (error) {
-      console.error("Error in getDataByMonth", error);
+      console.error("Error in getLastTenDaysData", error);
       return res.sendError(new Exception("GeneralError"));
     }
   }
@@ -187,23 +190,30 @@ class ReportsController {
   }
 
   /**
-     * Function: Get Last Ten Days' Data
+     * Function: Get Data by month
      * Url Parameters: userId
+     * Body Parameters: month, year
      * Logic:
-        - Get start of current day
-        - Get end of current day
-        - Get expense data between start and end of current day
-        - Similarly, get data for last ten days
-        - Map data with date
-        - Calculate total expense for each date
-        - Return that mapped expense data
+        - Get start of given month
+        - Get end of given month
+        - Get expense data between start and end of given month
+        - Get all expense categories for current user
+        - Map category name and id with expense data
+        - Return expense data
      */
-  static async getLastTenDaysData(req, res) {
+  static async getDataByMonth(req, res) {
     try {
+      let { month, year } = req.body;
       const { userId } = req.params;
 
       let invalidParams = [];
 
+      if (!month || month > 12 || month < 1) {
+        invalidParams.push("month");
+      }
+      if (!year) {
+        invalidParams.push("year");
+      }
       if (!userId) {
         invalidParams.push("userId");
       }
@@ -217,60 +227,54 @@ class ReportsController {
         );
       }
 
-      let functionCalls = [];
-      let results = {};
-      const fetchExpenses = async (startDate, endDate, date) => {
-        const expenseData = await ExpenseModel.getExpensesByDateRange(
-          userId,
-          startDate,
-          endDate
-        );
-        results[date] = expenseData;
-      };
+      // Get start and end of given month
+      const startDate = moment([year, month - 1]).unix() * 1000;
+      const endDate =
+        moment([year, month - 1])
+          .endOf("month")
+          .unix() * 1000;
 
-      // Function call for data between Start and end of the current day
-      let startDate = moment().startOf("day").unix() * 1000;
-      let endDate = moment().endOf("day").unix() * 1000;
-      let date = startDate;
-      functionCalls.push(fetchExpenses(startDate, endDate, date));
+      const expenseResult = await ExpenseModel.getExpensesByDateRange(
+        userId,
+        startDate,
+        endDate
+      );
+      const categories = await ExpenseModel.getAllExpenseCategories(userId);
 
-      // Function calls for data between Start and end of other nine days
-      for (let i = 0; i < 9; i++) {
-        startDate =
-          moment()
-            .subtract(i + 1, "days")
-            .startOf("day")
-            .unix() * 1000;
-        endDate =
-          moment()
-            .subtract(i + 1, "days")
-            .endOf("day")
-            .unix() * 1000;
-        date = startDate;
-        functionCalls.push(fetchExpenses(startDate, endDate, date));
-      }
+      let expenseMap = new Map();
 
-      await Promise.all(functionCalls);
-
-      if (results) {
-        // Calculate total expense for each month
-        for (const [key, expenses] of Object.entries(results)) {
-          let totalAmount = 0;
-          expenses.forEach((expense) => {
-            totalAmount += expense.amount;
-          });
-          results[key] = totalAmount;
+      expenseResult.forEach((expense) => {
+        if (expenseMap.has(expense.categoryId)) {
+          expenseMap.set(
+            expense.categoryId,
+            expenseMap.get(expense.categoryId) + expense.amount
+          );
+        } else {
+          expenseMap.set(expense.categoryId, expense.amount);
         }
+      });
+
+      let resultObject = {};
+
+      // Mapping of categories with expense data
+      expenseMap.forEach((value, key) => {
+        let categoryName = categories.find(
+          (x) => x._id.toString() === key.toString()
+        ).name;
+        resultObject[categoryName] = value;
+      });
+
+      if (expenseResult) {
         return res.sendResponse({
           success: true,
           message: "Report result retrieved",
-          data: results,
+          data: resultObject,
         });
       } else {
         return res.sendError(new Exception("GeneralError"));
       }
     } catch (error) {
-      console.error("Error in getLastTenDaysData", error);
+      console.error("Error in getDataByMonth", error);
       return res.sendError(new Exception("GeneralError"));
     }
   }
