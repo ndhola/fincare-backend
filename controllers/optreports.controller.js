@@ -1,3 +1,7 @@
+/*
+ * Author: Devraj Singh
+ */
+
 const Exception = require('../lib/exceptions');
 const OptreportsModel = require('../model/optreports.model');
 
