@@ -98,6 +98,15 @@ class ExpenseModel {
     }
   }
 
+  /**
+   *
+   * @param {String} userId
+   * @param {Number} startDate
+   * @param {Number} endDate
+   * @returns
+   *
+   * Description: Database call for expense data
+   */
   static async getExpensesByDateRange(userId, startDate, endDate) {
     try {
       const expenses = await new ExpenseSchema().expense.find({
