@@ -1,8 +1,16 @@
+/**
+ * Author: Kirtan Revinbhai Dudhatra
+ * Banner Id: B00863410
+ */
 const Exception = require('../lib/exceptions');
 const ExpenseModel = require('../model/expense.model');
 
 class ExpenseController {
 
+    /**
+     * Function: Create Expense
+     * Body Parameters: title, categoryId, amount, dateOfExpense, paymentMethod, userId
+     */
     static async createExpense(req, res) {
         try {
             const {title, categoryId, amount, dateOfExpense, paymentMethod, userId} = req.body;
@@ -49,6 +57,11 @@ class ExpenseController {
         }
     }
 
+    /**
+     * Function: Edit Expense
+     * Url Parameters: id
+     * Body Parameters: title, categoryId, amount, dateOfExpense, paymentMethod, userId
+     */
     static async editExpense(req, res) {
         try {
             const {id} = req.params;
@@ -99,6 +112,16 @@ class ExpenseController {
         }
     }
 
+    /**
+     * Function: Get All Expense
+     * Url Parameters: userId
+     * Logic:
+     - Get all expense of user
+     - Get all expense categories
+     - Map category names with categories of expenses
+     - Get all expense categories for current user
+     - Map category name and id with expense data
+     */
     static async getAllExpense(req, res) {
         try {
             const {userId} = req.params;
@@ -147,6 +170,10 @@ class ExpenseController {
         }
     }
 
+    /**
+     * Function: Delete Expense
+     * Url Parameters: expenseId
+     */
     static async deleteExpense(req, res) {
         try {
             const {expenseId} = req.params;
@@ -183,6 +210,10 @@ class ExpenseController {
         }
     }
 
+    /**
+     * Function: Create Expense Category
+     * Body Parameters: name, userId
+     */
     static async createExpenseCategory(req, res) {
         try {
             const {name, userId} = req.body;
@@ -217,6 +248,10 @@ class ExpenseController {
         }
     }
 
+    /**
+     * Function: Create All Expense Category
+     * Url Parameters: userId
+     */
     static async getAllExpenseCategory(req, res) {
         try {
             const {userId} = req.params;
