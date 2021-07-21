@@ -144,7 +144,17 @@ class UsersController {
 
       const otp = generateOtp()
 
-      sendOtpToEmail(email, otp, 'FinCare Login', 'Login to FinCare account')
+      const userAlreadyRegistered = await UserModel.IfUserAlreadyRegistered(
+        email
+      )
+      if (userAlreadyRegistered) {
+        sendOtpToEmail(email, otp, 'FinCare Login', 'Login to FinCare account')
+      } else {
+        return res.sendResponse({
+          success: false,
+          message: 'User Registration with this Email do not exist',
+        })
+      }
       await UserModel.saveOtpToDb(email, otp)
       return res.sendResponse({
         success: true,
@@ -229,7 +239,18 @@ class UsersController {
 
       const otp = generateOtp()
 
-      sendOtpToEmail(email, otp, 'FinCare Password Reset', 'Password Reset')
+      const userAlreadyRegistered = await UserModel.IfUserAlreadyRegistered(
+        email
+      )
+      if (userAlreadyRegistered) {
+        sendOtpToEmail(email, otp, 'FinCare Password Reset', 'Password Reset')
+      } else {
+        return res.sendResponse({
+          success: false,
+          message: 'User Registration with this Email do not exist',
+        })
+      }
+
       await UserModel.saveOtpToDb(email, otp)
 
       return res.sendResponse({
