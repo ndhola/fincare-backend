@@ -3,6 +3,7 @@ const Exception = require("../lib/exceptions");
 const ExpenseModel = require("../model/expense.model");
 
 class ReportsController {
+
   /**
      * Function: Get Data by month
      * Url Parameters: userId
@@ -273,6 +274,7 @@ class ReportsController {
       return res.sendError(new Exception("GeneralError"));
     }
   }
+
 }
 
 module.exports = ReportsController;
