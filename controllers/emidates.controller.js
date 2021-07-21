@@ -1,3 +1,7 @@
+/*
+ * Author: Devraj Singh
+ */
+
 const Exception = require('../lib/exceptions');
 const EmidatesModel = require('../model/emidates.model');
 const Utils = require('../lib/Utils');

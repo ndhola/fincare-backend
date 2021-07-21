@@ -1,3 +1,7 @@
+/*
+ * Author: Devraj Singh
+ */
+
 const OptReportsSchema = require('../mongo-models/opt_reports');
 
 class OptreportsModel{

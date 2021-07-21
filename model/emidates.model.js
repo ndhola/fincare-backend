@@ -1,3 +1,7 @@
+/*
+ * Author: Devraj Singh
+ */
+
 const EmiDatesSchema = require('../mongo-models/emi_dates');
 
 class EmidatesModel{
