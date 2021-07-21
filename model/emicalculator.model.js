@@ -1,3 +1,7 @@
+/**
+ * Author: Jemis Rameshbhai Zadafiya (B00873589)
+ * Description: It calculates Monthly EMI, Total Interest and Total Payment of Loan. calculateEmi function takes four parameter amount, interestRate, and period as parameters from fonrt end.
+ */
 const ExpenseSchema = require('../mongo-models/expense');
 const ExpenseCategorySchema = require('../mongo-models/expenseCategory');
 

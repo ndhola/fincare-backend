@@ -1,3 +1,7 @@
+/**
+ * Author: Jemis Rameshbhai Zadafiya (B00873589)
+ * Description: Controller File for EMI Calculator 
+ */
 const Exception = require('../lib/exceptions');
 const EmiCalculatorModel = require('../model/emicalculator.model');
 const ExpenseModel = require('../model/emicalculator.model');
