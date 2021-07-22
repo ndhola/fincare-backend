@@ -1,23 +1,7 @@
-/**
- * Author: Dhruv Bharatbhai Patel
- * Banner Id: B00868931
- */
 const IncomeSchema = require("../mongo-models/income");
 const IncomeCategorySchema = require("../mongo-models/incomeCategory");
 
 class IncomeModel {
-  /**
-   * Function:- Create Income
-   * @param title
-   * @param amount
-   * @param dateOfIncome
-   * @param paymentMethod
-   * @param categoryId
-   * @param userId
-   * @returns {Promise<boolean>}
-   *
-   * Description: Database call for create income
-   */
   static async createIncome(
     title,
     amount,
@@ -42,19 +26,6 @@ class IncomeModel {
     }
   }
 
-  /**
-   * Function:- Edit Income
-   * @param id
-   * @param title
-   * @param amount
-   * @param dateOfIncome
-   * @param paymentMethod
-   * @param categoryId
-   * @param userId
-   * @returns {Promise<boolean>}
-   *
-   * Description: Database call for update income
-   */
   static async editIncome(
     id,
     title,
@@ -83,13 +54,6 @@ class IncomeModel {
     }
   }
 
-  /**
-   * Function:- Get all Incomes
-   * @param userId
-   * @returns {Promise<*|null>}
-   *
-   * Description: Database call for get incomes by userId
-   */
   static async getAllIncomes(userId) {
     try {
       let Incomes = await new IncomeSchema().income.find({ userId });
@@ -100,13 +64,6 @@ class IncomeModel {
     }
   }
 
-  /**
-   * Function:- Delete Income
-   * @param IncomeId
-   * @returns {Promise<boolean>}
-   *
-   * Description: Database call for delete income by incomeId
-   */
   static async deleteIncome(IncomeId) {
     try {
       await new IncomeSchema().income.deleteOne({ _id: incomeId });
@@ -117,14 +74,6 @@ class IncomeModel {
     }
   }
 
-  /**
-   * Function:- Create Income Category
-   * @param name
-   * @param userId
-   * @returns {Promise<boolean>}
-   *
-   * Description: Database call for inserting income category
-   */
   static async createIncomeCategory(name, userId) {
     try {
       await new IncomeCategorySchema().incomeCategory.create({
@@ -138,13 +87,6 @@ class IncomeModel {
     }
   }
 
-  /**
-   * Function:- Get All Income Categories
-   * @param userId
-   * @returns {Promise<*|null>}
-   *
-   * Description: Database call for querying income category
-   */
   static async getAllIncomeCategories(userId) {
     try {
       const IncomeCategories =
@@ -156,15 +98,6 @@ class IncomeModel {
     }
   }
 
-  /**
-   *
-   * @param {String} userId
-   * @param {Number} startDate
-   * @param {Number} endDate
-   * @returns
-   *
-   * Description: Database call for income data
-   */
   static async getIncomesByDateRange(userId, startDate, endDate) {
     try {
       const Incomes = await new IncomeSchema().Income.find({

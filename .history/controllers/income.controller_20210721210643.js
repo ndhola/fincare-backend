@@ -1,7 +1,3 @@
-/**
- * Author: Dhruv Bharatbhai Patel
- * Banner Id: B00868931
- */
 const Exception = require("../lib/exceptions");
 const IncomeModel = require("../model/income.model");
 

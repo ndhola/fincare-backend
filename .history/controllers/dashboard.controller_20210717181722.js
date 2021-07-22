@@ -1,18 +1,11 @@
-/**
- * Author: Dhruv Bharatbhai Patel
- * Banner Id: B00868931
- */
 const Exception = require("../lib/exceptions");
 const ExpenseModel = require("../model/expense.model");
 const IncomeModel = require("../model/income.model");
 const DashboardModel = require("../model/dashboard.model");
 
 class DashboardController {
-  /**
-   * Function: getAllExpensesTotal
-   * Url Parameters: userId
-   */
   static async getAllExpensesTotal(req, res) {
+    console.log("Inside dashboard controller");
     try {
       const { userId } = req.params;
 
@@ -54,11 +47,8 @@ class DashboardController {
     }
   }
 
-  /**
-   * Function: getAllIncomesTotal
-   * Url Parameters: userId
-   */
   static async getAllIncomesTotal(req, res) {
+    console.log("Inside dashboard controller");
     try {
       const { userId } = req.params;
 
@@ -100,10 +90,6 @@ class DashboardController {
     }
   }
 
-  /**
-   * Function: getAllExpenses
-   * Url Parameters: userId
-   */
   static async getAllExpenses(req, res) {
     try {
       const { userId } = req.params;
@@ -150,10 +136,6 @@ class DashboardController {
     }
   }
 
-  /**
-   * Function: getAllIncomes
-   * Url Parameters: userId
-   */
   static async getAllIncomes(req, res) {
     try {
       const { userId } = req.params;
@@ -200,10 +182,6 @@ class DashboardController {
     }
   }
 
-  /**
-   * Function: getSavings
-   * Url Parameters: userId
-   */
   static async getSavings(req, res) {
     console.log("Inside dashboard controller");
     try {
@@ -259,10 +237,6 @@ class DashboardController {
     }
   }
 
-  /**
-   * Function: getAllExpensesDetails
-   * Url Parameters: userId
-   */
   static async getAllExpensesDetails(req, res) {
     try {
       const { userId } = req.params;

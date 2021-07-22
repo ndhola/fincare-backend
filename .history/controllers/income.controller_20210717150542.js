@@ -1,15 +1,7 @@
-/**
- * Author: Dhruv Bharatbhai Patel
- * Banner Id: B00868931
- */
 const Exception = require("../lib/exceptions");
 const IncomeModel = require("../model/income.model");
 
 class IncomeController {
-  /**
-   * Function: Create Income
-   * Body Parameters: title, categoryId, amount, dateOfIncome, paymentMethod, userId
-   */
   static async createIncome(req, res) {
     try {
       const { title, categoryId, amount, dateOfIncome, paymentMethod, userId } =
@@ -68,11 +60,6 @@ class IncomeController {
     }
   }
 
-  /**
-   * Function: Edit Income
-   * Url Parameters: id
-   * Body Parameters: title, categoryId, amount, dateOfIncome, paymentMethod, userId
-   */
   static async editIncome(req, res) {
     try {
       const { id } = req.params;
@@ -136,16 +123,6 @@ class IncomeController {
     }
   }
 
-  /**
-  * Function: Get All Income
-  * Url Parameters: userId
-  * Logic:
-  - Get all income of user
-  - Get all income categories
-  - Map category names with categories of incomes
-  - Get all income categories for current user
-  - Map category name and id with income data
-  */
   static async getAllIncome(req, res) {
     try {
       const { userId } = req.params;
@@ -200,10 +177,6 @@ class IncomeController {
     }
   }
 
-  /**
-   * Function: Delete Income
-   * Url Parameters: incomeId
-   */
   static async deleteIncome(req, res) {
     try {
       const { IncomeId } = req.params;
@@ -244,10 +217,6 @@ class IncomeController {
     }
   }
 
-  /**
-   * Function: Create Income Category
-   * Body Parameters: name, userId
-   */
   static async createIncomeCategory(req, res) {
     try {
       const { name, userId } = req.body;
@@ -286,10 +255,6 @@ class IncomeController {
     }
   }
 
-  /**
-   * Function: Create All Income Category
-   * Url Parameters: userId
-   */
   static async getAllIncomeCategory(req, res) {
     try {
       const { userId } = req.params;

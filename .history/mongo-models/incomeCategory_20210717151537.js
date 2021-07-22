@@ -1,7 +1,3 @@
-/**
- * Author: Dhruv Bharatbhai Patel
- * Banner Id: B00868931
- */
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
