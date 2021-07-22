@@ -198,6 +198,7 @@ class UsersController {
         return res.sendResponse({
           success: true,
           message: 'OTP Verification Successful!',
+          data: user,
           token: generateToken(user),
         })
       } else {
