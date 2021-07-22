@@ -1,8 +1,15 @@
+/**
+ * Author: Falgun Manishbhai Makadia
+ * Banner Id: B00874635
+ */
 const Exception = require('../lib/exceptions')
 const jwt = require('jsonwebtoken')
 const asyncHandler = require('express-async-handler')
 const UsersSchema = require('../mongo-models/users')
 
+/**
+ * Description: Protect middleware to verify JWT and prevent unauthorized access to specific routes
+ */
 const protect = asyncHandler(async (req, res, next) => {
   let token
 
