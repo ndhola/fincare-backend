@@ -1,3 +1,7 @@
+/**
+ * Author: Kirtan Revinbhai Dudhatra
+ * Banner Id: B00863410
+ */
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 

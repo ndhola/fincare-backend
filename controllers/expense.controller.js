@@ -142,6 +142,7 @@ class ExpenseController {
             let expenseResult = [];
 
             if(expenses){
+                // Map Categorynames with expenses
                 for(let i=0;i<expenses.length;i++){
                     let categoryName = (categories.find(x => x._id.toString() === expenses[i].categoryId.toString())).name;
                     expenseResult.push({
