@@ -1,7 +1,3 @@
-/**
- * Author: Dhruv Bharatbhai Patel
- * Banner Id: B00868931
- */
 const router = require("express").Router();
 const IncomeController = require("../controllers/income.controller");
 

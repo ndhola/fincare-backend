@@ -1,0 +1,33 @@
+{
+  "name": "kirtan-revinbhai-dudhatra-csci5709-t5",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kirtan-dal/kirtan-revinbhai-dudhatra-csci5709-t5.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kirtan-dal/kirtan-revinbhai-dudhatra-csci5709-t5/issues"
+  },
+  "homepage": "https://github.com/kirtan-dal/kirtan-revinbhai-dudhatra-csci5709-t5#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "moment": "^2.29.1",
+    "mongodb": "^4.0.0",
+    "mongoose": "^5.13.2",
+<<<<<<< HEAD
+=======
+    "nodemailer": "^6.6.3",
+>>>>>>> 97bbc380558739ed8bbfb364adf84c677a409773
+    "nodemon": "^2.0.12"
+  }
+}

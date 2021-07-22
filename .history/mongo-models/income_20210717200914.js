@@ -1,7 +1,3 @@
-/**
- * Author: Dhruv Bharatbhai Patel
- * Banner Id: B00868931
- */
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
@@ -21,9 +17,9 @@ class Income {
           versionKey: false,
         }
       );
-      this.income = global.Mongoose.model("income", this.__income);
+      this.Income = global.Mongoose.model("income", this.__income);
     } catch (error) {
-      this.income = global.Mongoose.model("income");
+      this.Income = global.Mongoose.model("income");
     }
   }
 }
