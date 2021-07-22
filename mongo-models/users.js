@@ -1,3 +1,7 @@
+/**
+ * Author: Falgun Manishbhai Makadia
+ * Banner Id: B00874635
+ */
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
