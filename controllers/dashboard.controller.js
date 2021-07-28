@@ -251,7 +251,7 @@ class DashboardController {
       return res.sendResponse({
         success: true,
         message: "Incomes Retrived",
-        data: amount_expense - amount_income,
+        data: amount_income - amount_expense,
       });
     } catch (error) {
       console.error("Error in getting all Income", error);
